@@ -25,7 +25,14 @@ const CounterText = styled.span``; // add your styles here
 
 const MintContainer = styled.div``; // add your styles here
 
-const MintButton = styled(Button)``; // add your styles here
+const MintButton = styled(Button)`
+  border-radius: 3px;
+  border: 2px solid #5c563d;
+  background: #5c563d;
+  color: white;
+  margin: 0 1em;
+  padding: 0.25em 1em;
+`; // add your styles here
 
 export interface HomeProps {
   candyMachineId: anchor.web3.PublicKey;
