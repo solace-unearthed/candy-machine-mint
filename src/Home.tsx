@@ -171,13 +171,13 @@ const Home = (props: HomeProps) => {
       <p id="heading">prickly pete's platoon</p>
       <p id="price"> Price : 1    SOL </p>
 
-      {wallet.connected && (
+      {/* {wallet.connected && (
         <p>Address: {shortenAddress(wallet.publicKey?.toBase58() || "")}</p>
       )}
 
       {wallet.connected && (
         <p>Balance: {(balance || 0).toLocaleString()} SOL</p>
-      )}
+      )} */}
 
       <MintContainer>
         {!wallet.connected ? (
