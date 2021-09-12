@@ -167,6 +167,10 @@ const Home = (props: HomeProps) => {
 
   return (
     <main>
+
+      <p id="heading">prickly pete's platoon</p>
+      <p id="price"> Price : 1    SOL </p>
+
       {wallet.connected && (
         <p>Address: {shortenAddress(wallet.publicKey?.toBase58() || "")}</p>
       )}

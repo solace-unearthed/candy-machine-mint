@@ -15,3 +15,17 @@ p {
   font-size: 24px;
   font-weight: bold;
 }
+
+#heading {
+  font-family: 'Monoton';
+  color: black;
+  font-weight: lighter;
+  font-size: 64px;
+}
+
+#price {
+  font-family: 'Monoton';
+  color: #333333;
+  font-weight: lighter;
+  font-size: 24px;
+}
