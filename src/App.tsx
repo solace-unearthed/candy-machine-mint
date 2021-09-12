@@ -17,7 +17,7 @@ import {
   WalletProvider,
 } from "@solana/wallet-adapter-react";
 
-import { WalletDialogProvider } from "@solana/wallet-adapter-material-ui";
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 
 const treasury = new anchor.web3.PublicKey(
   process.env.REACT_APP_TREASURY_ADDRESS!
@@ -51,7 +51,7 @@ const App = () => {
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
-        <WalletDialogProvider>
+        <WalletModalProvider>
           <Home
             candyMachineId={candyMachineId}
             config={config}
@@ -60,7 +60,7 @@ const App = () => {
             treasury={treasury}
             txTimeout={txTimeout}
           />
-        </WalletDialogProvider>
+        </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
   );

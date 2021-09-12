@@ -9,7 +9,7 @@ import * as anchor from "@project-serum/anchor";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 import { useWallet } from "@solana/wallet-adapter-react";
-import { WalletDialogButton } from "@solana/wallet-adapter-material-ui";
+import { WalletModalButton } from "@solana/wallet-adapter-react-ui";
 
 import {
   CandyMachine,
@@ -19,11 +19,19 @@ import {
   shortenAddress,
 } from "./candy-machine";
 
-const ConnectButton = styled(WalletDialogButton)``;
+const ConnectButton = styled(WalletModalButton)``;
 
 const CounterText = styled.span``; // add your styles here
 
-const MintContainer = styled.div``; // add your styles here
+const MintContainer = styled.div`
+  align-content: center;
+  box-sizing: border-box;
+  display: grid;
+  color: beige;
+  line-height: 1.65;
+  margin: 0 auto;
+  text-align: center;
+`; // add your styles here
 
 const MintButton = styled(Button)`
   border-radius: 3px;
