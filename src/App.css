@@ -5,29 +5,40 @@ main {
   color: white;
   line-height: 1.65;
   margin: 0 auto;
-  max-width: 680px;
+  max-width: 500px;
   min-height: 100vh;
-  padding: 72px 0;
+  padding: 20px;
   text-align: center;
 }
 
 p {
   font-size: 20px;
   font-weight: bold;
+  /* background-color: #282626; */
 }
 
 #heading {
-  font-family: 'Monoton';
+  font-family: 'Poppins', sans-serif;
   color: rgb(255, 255, 255);
-  font-weight: lighter;
-  font-size: 64px;
+  font-weight: bold;
+  font-size: 40px;
+  background-color: #282626;
 }
 
 #price {
-  font-family: 'Monoton';
+  font-family: 'Poppins', sans-serif;
   color: rgb(255, 255, 255);
-  font-weight: lighter;
+  font-weight: bold;
   font-size: 24px;
+  background-color: #282626;
+}
+
+#message {
+  font-family: 'Poppins', sans-serif;
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  font-size: 25px;
+  background-color: #282626;
 }
 
 a {
