@@ -27,7 +27,6 @@ const MintContainer = styled.div`
   align-content: center;
   box-sizing: border-box;
   display: grid;
-  color: beige;
   line-height: 1.65;
   margin: 0 auto;
   text-align: center;
@@ -177,7 +176,8 @@ const Home = (props: HomeProps) => {
     <main>
 
       <p id="heading">prickly pete's platoon</p>
-      <p id="price"> Price : 1    SOL </p>
+      {/* <p id="price"> price : 1 sol </p> */}
+      <p id="message"> Mint Date will be announced shortly. <br/> <a href="https://twitter.com/pricklyplatoons"><img src="https://img.icons8.com/color/48/000000/twitter--v1.png"/></a>  </p>
 
       {/* {wallet.connected && (
         <p>Address: {shortenAddress(wallet.publicKey?.toBase58() || "")}</p>
@@ -187,7 +187,7 @@ const Home = (props: HomeProps) => {
         <p>Balance: {(balance || 0).toLocaleString()} SOL</p>
       )} */}
 
-      <MintContainer>
+      {/* <MintContainer>
         {!wallet.connected ? (
           <ConnectButton>Connect Wallet</ConnectButton>
         ) : (
@@ -214,7 +214,7 @@ const Home = (props: HomeProps) => {
             )}
           </MintButton>
         )}
-      </MintContainer>
+      </MintContainer> */}
 
       <Snackbar
         open={alertState.open}

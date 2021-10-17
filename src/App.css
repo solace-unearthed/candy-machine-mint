@@ -2,7 +2,7 @@ main {
   align-content: center;
   box-sizing: border-box;
   display: grid;
-  color: beige;
+  color: white;
   line-height: 1.65;
   margin: 0 auto;
   max-width: 680px;
@@ -12,20 +12,24 @@ main {
 }
 
 p {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
 }
 
 #heading {
   font-family: 'Monoton';
-  color: black;
+  color: rgb(255, 255, 255);
   font-weight: lighter;
   font-size: 64px;
 }
 
 #price {
   font-family: 'Monoton';
-  color: #333333;
+  color: rgb(255, 255, 255);
   font-weight: lighter;
   font-size: 24px;
+}
+
+a {
+  color: lightblue;
 }
