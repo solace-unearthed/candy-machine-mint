@@ -41,6 +41,11 @@ p {
   background-color: #282626;
 }
 
+@media (max-width: 550px) {
+  #message { font-size: 40px; }
+  #heading { font-size: 30px; }
+}
+
 a {
   color: lightblue;
 }
