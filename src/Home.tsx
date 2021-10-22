@@ -178,7 +178,7 @@ const Home = (props: HomeProps) => {
       <p id="heading">Prickly Pete's Platoon</p>
       {/* <p id="price"> price : 1 sol </p> */}
       <p id="message"> Mint Date will be announced soon!</p>
-      <p><a href="https://twitter.com/pricklyplatoons"><img src="https://img.icons8.com/color/96/000000/twitter--v1.png"/></a></p>
+      <p><a href="https://twitter.com/pricklyplatoons"><img src="https://img.icons8.com/color/96/000000/twitter--v1.png"/></a><a href="https://discord.gg/wt3PwDSETz"><img src="https://img.icons8.com/fluency/84/000000/discord.png"/></a></p>
 
       {/* {wallet.connected && (
         <p>Address: {shortenAddress(wallet.publicKey?.toBase58() || "")}</p>
