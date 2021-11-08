@@ -8,10 +8,15 @@ body {
   background-image: url(./assets/web_background_1.jpg);
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
+  background-color: #303030;
+  color: #FFFFFF;
 }
 
-
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.wallet-adapter-button-trigger {
+  background-color: #44ce56;
 }

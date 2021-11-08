@@ -9,17 +9,17 @@ import * as anchor from "@project-serum/anchor";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
-import { WalletDialogButton } from "@solana/wallet-adapter-material-ui";
+import { WalletMultiButton } from "@solana/wallet-adapter-material-ui";
 
 import {
   CandyMachine,
   awaitTransactionSignatureConfirmation,
   getCandyMachineState,
   mintOneToken,
-  // shortenAddress,
+  shortenAddress,
 } from "./candy-machine";
 
-const ConnectButton = styled(WalletDialogButton)``;
+const ConnectButton = styled(WalletMultiButton)``;
 
 const CounterText = styled.span``; // add your styles here
 
@@ -27,11 +27,8 @@ const MintContainer = styled.div``; // add your styles here
 
 const MintButton = styled(Button)`
   font-family: 'Poppins', sans-serif;
-  font-size: 28px;
-  font-weight: 600;
-  background: #C0ED38;
-  border-radius: 8px;
-  color: black;
+  color: white;
+  background-color: #282626;
 `; // add your styles here
 
 export interface HomeProps {
@@ -44,10 +41,12 @@ export interface HomeProps {
 }
 
 const Home = (props: HomeProps) => {
+  const [api_url, setUrl] = useState(process.env.REACT_APP_API_URL)
   const [balance, setBalance] = useState<number>();
   const [isActive, setIsActive] = useState(false); // true when countdown completes
   const [isSoldOut, setIsSoldOut] = useState(false); // true when items remaining is zero
   const [isMinting, setIsMinting] = useState(false); // true when user got to press MINT
+  const [isWhitelisted, SetWhitelisted] = useState(false);
 
   const [itemsAvailable, setItemsAvailable] = useState(0);
   const [itemsRedeemed, setItemsRedeemed] = useState(0);
@@ -66,7 +65,7 @@ const Home = (props: HomeProps) => {
 
   const refreshCandyMachineState = () => {
     (async () => {
-      // if (!wallet) return;
+      if (!wallet) return;
 
       const {
         candyMachine,
@@ -94,6 +93,16 @@ const Home = (props: HomeProps) => {
 
   const onMint = async () => {
     try {
+      let res = await fetch(`${api_url}/whitelisted/member/${(wallet as anchor.Wallet).publicKey.toString()}`, { method: "GET" })
+      const res_json = await res.json()
+      const res_num = await JSON.parse(JSON.stringify(res_json)).reserve //The number  of reserves the user has left
+      if (!isWhitelisted) {
+        throw new Error("You are not whitelisted");
+      }
+      if (res_num - 1 < 0) {
+        console.log("confirmed")
+        throw new Error("Not enough reserves");
+      }
       setIsMinting(true);
       if (wallet && candyMachine?.program) {
         const mintTxId = await mintOneToken(
@@ -117,6 +126,16 @@ const Home = (props: HomeProps) => {
             message: "Congratulations! Mint succeeded!",
             severity: "success",
           });
+          const to_send = await JSON.stringify({ "reserve": res_num - 1 })
+          await fetch(`${api_url}/whitelisted/update/${(wallet as anchor.Wallet).publicKey.toString()}/${process.env.REACT_APP_SECRET_KEY}`, {
+            method: "PUT",
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: to_send
+          })
+          console.log("Updated Reserves for user")
+
         } else {
           setAlertState({
             open: true,
@@ -129,11 +148,23 @@ const Home = (props: HomeProps) => {
       // TODO: blech:
       let message = error.msg || "Minting failed! Please try again!";
       if (!error.msg) {
-        if (error.message.indexOf("0x138")) {
-        } else if (error.message.indexOf("0x137")) {
+        if (error.message === '"Cannot read properties of undefined (reading \'publicKey\')"') {
+          message = error.message;
+        }
+        else if (error.message === "You are not whitelisted") {
+          message = error.message;
+        } 
+        else if (error.message === "Not enough reserves") {
+          message = error.message
+        } 
+        else if (error.message.indexOf("0x137")) {
           message = `SOLD OUT!`;
-        } else if (error.message.indexOf("0x135")) {
+        } 
+        else if (error.message.indexOf("0x135")) {
           message = `Insufficient funds to mint. Please fund your wallet.`;
+        } 
+        else if (error.message.indexOf("0x138")) {
+        
         }
       } else {
         if (error.code === 311) {
@@ -164,6 +195,13 @@ const Home = (props: HomeProps) => {
       if (wallet) {
         const balance = await props.connection.getBalance(wallet.publicKey);
         setBalance(balance / LAMPORTS_PER_SOL);
+        const data = await fetch(`${api_url}/whitelisted/member/${(wallet as anchor.Wallet).publicKey.toString()}`)
+        if (data.status.toString() !== "404") {
+          SetWhitelisted(true)
+        }
+        else {
+          console.log("not found")
+        }
       }
     })();
   }, [wallet, props.connection]);
@@ -191,6 +229,27 @@ const Home = (props: HomeProps) => {
       >
         <div
           style={{
+            display: "flex",
+            justifyContent: "space-between",
+
+          }}
+        >
+          {wallet && (
+            <p style={{
+              backgroundColor: "#282626",
+              fontFamily: "'Poppins', sans-serif",
+              fontWeight: "bold",
+              fontSize: 15,
+              padding: 5
+            }}>
+              {shortenAddress(wallet.publicKey.toBase58() || "")}
+            </p>
+          )}
+          <div></div>
+          <ConnectButton>{wallet ? "Connected" : "Connect Wallet"}</ConnectButton>
+        </div>
+        <div
+          style={{
             flex: 1,
             display: "flex",
             justifyContent: "space-evenly",
@@ -201,69 +260,16 @@ const Home = (props: HomeProps) => {
 
           <div>
             <p style={{
-              backgroundColor: "#FFFFFF",
-              fontFamily: 'Permanent Marker',
+              backgroundColor: "#282626",
+              fontFamily: "'Poppins', sans-serif",
               fontWeight: "bold",
-              fontSize: 56,
-              color: "black",
-              border: "6px solid #222222",
-              boxSizing: "border-box",
-              borderRadius: "4px",
-              paddingLeft: "5px",
-              paddingRight: "5px",
-            }}>Prickly Pete's Platoon</p>
+              fontSize: 35,
+              padding: 20
+            }}>Prickly Pete's Platoon <br /> </p>
           </div>
 
-          <div style={{
-            backgroundColor: "#FFFFFF",
-            
-            fontFamily: 'Poppins',
-            color: "black",
-            
-            border: "6px solid #222222",
-            boxSizing: "border-box",
-            borderRadius: "4px",
-            
-            paddingLeft: "5px",
-            paddingRight: "5px",
-            
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column",
-
-            padding: "2%"
-          }}>
-            {/* {wallet && <p>Balance: {(balance || 0).toLocaleString()} SOL</p>} */}
-
-            <p style={{
-                fontWeight: "bold",
-                fontSize: 35,
-                margin: 0
-            }}>2nd Nov 2021 | 17:00 UTC</p>
-
-            <p style={{
-              fontWeight: "normal",
-              fontSize: 20,
-              margin: 0
-            }}>Mint Price: 0 SOL</p>
-
-
-            <p style={{
-              fontWeight: "normal",
-              fontSize: 20,
-              margin: 0
-            }}>{itemsRemaining !== 0 ? (`Toons minted: ${itemsRedeemed}/${itemsAvailable}`) : ("SOLD OUT")}</p>
-
-            {/* {wallet && <p>Platoons Remaining: {itemsRemaining}</p>} */}
-
-            {/* {wallet && <p> {String(startDate)} </p>} */}
-
-          </div>
 
           <MintContainer>
-          {(!wallet && !isSoldOut) ? (
-              <ConnectButton className="prickly-button">Connect Wallet</ConnectButton>
-            ) : (
             <MintButton
               disabled={isSoldOut || isMinting || !isActive}
               onClick={onMint}
@@ -278,7 +284,7 @@ const Home = (props: HomeProps) => {
                       <CircularProgress />
                     )
                       : (
-                        "Mint a Toon"
+                        "MINT"
                       )
                   )
                     : (
@@ -291,9 +297,31 @@ const Home = (props: HomeProps) => {
                     )
               }
             </MintButton>
-            )}
+
           </MintContainer>
 
+          <div style={{
+            backgroundColor: "#282626",
+            fontFamily: "'Poppins', sans-serif",
+            fontWeight: "bold",
+            fontSize: 25,
+            textAlign: "center",
+            padding: "20px"
+          }}>
+            {/* {wallet && <p>Balance: {(balance || 0).toLocaleString()} SOL</p>} */}
+
+            {wallet && <p>Minted : {itemsRedeemed}/{itemsAvailable}</p>}
+
+            {/* {wallet && <p>Platoons Remaining: {itemsRemaining}</p>} */}
+
+            {/* {wallet && <p> {String(startDate)} </p>} */}
+
+            <p>
+              <a href="https://twitter.com/pricklyplatoons"><img src="https://img.icons8.com/color/60/000000/twitter--v1.png" /></a>
+              <a href="https://discord.gg/wt3PwDSETz"><img src="https://img.icons8.com/fluency/50/000000/discord.png" /></a>
+            </p>
+
+          </div>
         </div>
 
         <Snackbar

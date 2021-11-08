@@ -1,51 +1,16 @@
-main {
-  align-content: center;
-  box-sizing: border-box;
-  display: grid;
-  color: white;
-  line-height: 1.15;
-  margin: 0 auto;
-  max-width: 700px;
-  min-height: 100vh;
-  padding: 20px;
+.App {
   text-align: center;
 }
 
-p {
-  font-size: 20px;
-  font-weight: bold;
-  /* background-color: #282626; */
+.prickly-button {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 28px !important;
+  font-weight: 600 !important;
+  background: #C0ED38 !important;
+  border-radius: 8px !important;
+  color: black !important;
 }
 
-#heading {
-  font-family: 'Poppins', sans-serif;
-  color: rgb(255, 255, 255);
-  font-weight: bold;
-  font-size: 40px;
-  background-color: #282626;
-}
-
-#price {
-  font-family: 'Poppins', sans-serif;
-  color: rgb(255, 255, 255);
-  font-weight: bold;
-  font-size: 24px;
-  background-color: #282626;
-}
-
-#message {
-  font-family: 'Poppins', sans-serif;
-  color: rgb(255, 255, 255);
-  font-weight: bold;
-  font-size: 60px;
-  background-color: #282626;
-}
-
-@media (max-width: 550px) {
-  #message { font-size: 40px; }
-  #heading { font-size: 30px; }
-}
-
-a {
-  color: lightblue;
+.hidden {
+  display: none;
 }
