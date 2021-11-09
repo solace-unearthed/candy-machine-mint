@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Countdown from "react-countdown";
-import { Button, CircularProgress, Snackbar } from "@material-ui/core";
+import { Button, CircularProgress, Snackbar, createStyles, makeStyles } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 
 import * as anchor from "@project-serum/anchor";
@@ -25,14 +25,25 @@ const CounterText = styled.span``; // add your styles here
 
 const MintContainer = styled.div``; // add your styles here
 
-const MintButton = styled(Button)`
-  font-family: 'Poppins', sans-serif;
-  font-size: 28px;
-  font-weight: 600;
-  background: #C0ED38;
-  border-radius: 8px;
-  color: black;
-`; // add your styles here
+const useStyle = makeStyles(() => createStyles({
+  mint: {
+    fontFamily: 'Poppins, sans-serif',
+    fontSize: '28px',
+    fontWeight: 600,
+    background: '#C0ED38',
+    borderRadius: '8px',
+    color: 'black',
+  },
+}))
+
+// const MintButton = styled(Button)`
+//   font-family: 'Poppins', sans-serif;
+//   font-size: 28px;
+//   font-weight: 600;
+//   background: #C0ED38;
+//   border-radius: 8px;
+//   color: black;
+// `; // add your styles here
 
 export interface HomeProps {
   candyMachineId: anchor.web3.PublicKey;
@@ -54,6 +65,7 @@ const Home = (props: HomeProps) => {
   const [itemsAvailable, setItemsAvailable] = useState(0);
   const [itemsRedeemed, setItemsRedeemed] = useState(0);
   const [itemsRemaining, setItemsRemaining] = useState(0);
+  const classes = useStyle();
 
   const [alertState, setAlertState] = useState<AlertState>({
     open: false,
@@ -291,7 +303,7 @@ const Home = (props: HomeProps) => {
                 fontWeight: "bold",
                 fontSize: 35,
                 margin: 0
-            }}>2nd Nov 2021 | 17:00 UTC</p>
+            }}>9th Nov 2021 | 18:00 UTC</p>
 
             <p style={{
               fontWeight: "normal",
@@ -304,7 +316,8 @@ const Home = (props: HomeProps) => {
               fontWeight: "normal",
               fontSize: 20,
               margin: 0
-            }}>{`Toons minted: ${itemsRedeemed}/${itemsAvailable}`}</p>
+            // }}>{`Toons minted: ${itemsRedeemed}/${itemsAvailable}`}</p>
+            }}>{itemsRemaining === 0 ? ("") : (`Toons minted: ${itemsRedeemed}/${itemsAvailable}`)}</p>
             {/* }}>{itemsRemaining === 0 ? ("SOLD OUT") : (`Toons minted: ${itemsRedeemed}/${itemsAvailable}`)}</p> */}
 
             {/* {wallet && <p>Platoons Remaining: {itemsRemaining}</p>} */}
@@ -317,10 +330,11 @@ const Home = (props: HomeProps) => {
           {(!wallet && !isSoldOut) ? (
               <ConnectButton className="prickly-button">Connect Wallet</ConnectButton>
             ) : (
-            <MintButton
+            <Button
               disabled={isSoldOut || isMinting || !isActive}
               onClick={onMint}
               variant="contained"
+              className = {classes.mint}
             >
               {
                 isSoldOut ? (
@@ -343,7 +357,7 @@ const Home = (props: HomeProps) => {
                       />
                     )
               }
-            </MintButton>
+            </Button>
             )}
           </MintContainer>
 
