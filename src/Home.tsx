@@ -303,13 +303,13 @@ const Home = (props: HomeProps) => {
                 fontWeight: "bold",
                 fontSize: 35,
                 margin: 0
-            }}>9th Nov 2021 | 18:00 UTC</p>
+            }}>21st Nov 2021 | 05:00 UTC</p>
 
             <p style={{
               fontWeight: "normal",
               fontSize: 20,
               margin: 0
-            }}>Mint Price: 0 SOL</p>
+            }}>Mint Price: 0.8 SOL</p>
 
 
             <p style={{
