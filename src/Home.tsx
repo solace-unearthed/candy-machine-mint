@@ -265,7 +265,7 @@ const Home = (props: HomeProps) => {
 				setTimeLeft(timeToCheck - date);
 			}, 1000);
 
-			if (date < timeToCheck && itemsRedeemed > 26) {
+			if (date < timeToCheck && itemsRedeemed > parseInt(process.env.REACT_APP_WHITELIST_COUNT!, 10)) {
 				setIsWhitelist(true);
 			} else {
 				clearTimeout(time);
