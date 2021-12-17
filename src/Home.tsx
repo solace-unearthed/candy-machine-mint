@@ -110,20 +110,20 @@ const Home = (props: HomeProps) => {
     try {
       // // console.log("here");
     
-      // let res = await fetch(`${api_url}/whitelisted/member/${(wallet as anchor.Wallet).publicKey.toString()}`, { method: "GET" })
-      // // console.log(res)
-      // const res_json = await res.json()
-      // // console.log(res_json)
-      // const res_num = await JSON.parse(JSON.stringify(res_json)).reserve //The number  of reserves the user has left
-      // // console.log(res_num)
-      // if (res_json["detail"] == "No wallet found") {
-      //   // console.log("theres here");
-      //   throw new Error("You are not whitelisted");
-      // }
-      // if (res_num - 1 < 0) {
-      //   // console.log("confirmed")
-      //   throw new Error("Not enough reserves");
-      // }
+      let res = await fetch(`${api_url}/whitelisted/member/${(wallet as anchor.Wallet).publicKey.toString()}`, { method: "GET" })
+      // console.log(res)
+      const res_json = await res.json()
+      // console.log(res_json)
+      const res_num = await JSON.parse(JSON.stringify(res_json)).reserve //The number  of reserves the user has left
+      // console.log(res_num)
+      if (res_json["detail"] == "No wallet found") {
+        // console.log("theres here");
+        throw new Error("You are not whitelisted");
+      }
+      if (res_num - 1 < 0) {
+        // console.log("confirmed")
+        throw new Error("Not enough reserves");
+      }
       setIsMinting(true);
       if (wallet && candyMachine?.program) {
 
@@ -150,15 +150,15 @@ const Home = (props: HomeProps) => {
             message: "Congratulations! Mint succeeded!",
             severity: "success",
           });
-          // const to_send = await JSON.stringify({ "reserve": res_num - 1 })
-          // await fetch(`${api_url}/whitelisted/update/${(wallet as anchor.Wallet).publicKey.toString()}/${process.env.REACT_APP_SECRET_KEY}`, {
-          //   method: "PUT",
-          //   headers: {
-          //     'Content-Type': 'application/json',
-          //   },
-          //   body: to_send
-          // })
-          // console.log("Updated Reserves for user")
+          const to_send = await JSON.stringify({ "reserve": res_num - 1 })
+          await fetch(`${api_url}/whitelisted/update/${(wallet as anchor.Wallet).publicKey.toString()}/${process.env.REACT_APP_SECRET_KEY}`, {
+            method: "PUT",
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: to_send
+          })
+          console.log("Updated Reserves for user")
 
         } else {
           setAlertState({
@@ -303,13 +303,13 @@ const Home = (props: HomeProps) => {
                 fontWeight: "bold",
                 fontSize: 35,
                 margin: 0
-            }}>21st Nov 2021 | 05:00 UTC</p>
+            }}>18th Dec 2021 | 17:00 UTC </p>
 
             <p style={{
               fontWeight: "normal",
               fontSize: 20,
               margin: 0
-            }}>Mint Price: 0.8 SOL</p>
+            }}>Mint Price: 0.55 SOL</p>
 
 
             <p style={{
